@@ -10,9 +10,9 @@ type Person struct {
 
 func TestStaticString_En(t *testing.T) {
 
-	T, _ := GetTranslator("en");
+	i18n := createI18n("en")
 
-	translated := T("hello_world");
+	translated := i18n.T("hello_world");
 
 	expected := "Hello world"
 	if translated != expected {
@@ -22,9 +22,9 @@ func TestStaticString_En(t *testing.T) {
 
 func TestComposedString_En(t *testing.T) {
 
-	T, _ := GetTranslator("en");
+	i18n := createI18n("en")
 
-	translated := T("greeting", &Person{ Name: "John"  });
+	translated := i18n.T("greeting", &Person{ Name: "John"  });
 
 	expected := "Hello John"
 	if translated != expected {
@@ -34,9 +34,9 @@ func TestComposedString_En(t *testing.T) {
 
 func TestStaticString_Fr(t *testing.T) {
 
-	T, _ := GetTranslator("fr");
+	i18n := createI18n("fr")
 
-	translated := T("hello_world");
+	translated := i18n.T("hello_world");
 
 	expected := "Bonjour le monde"
 	if translated != expected {
@@ -46,12 +46,18 @@ func TestStaticString_Fr(t *testing.T) {
 
 func TestComposedString_Fr(t *testing.T) {
 
-	T, _ := GetTranslator("fr");
+	i18n := createI18n("fr")
 
-	translated := T("greeting", &Person{ Name: "John"  });
+	translated := i18n.T("greeting", &Person{ Name: "John"  });
 
 	expected := "Bonjour John"
 	if translated != expected {
 		t.Error("Incortrect, expected " + expected + " but " + translated);
 	}
+}
+
+func createI18n(localeId string) I18n{
+	SetUp("resources/vube-i18n/rules", "resources/vube-i18n/strings", "en")
+	i18n := NewI18n(localeId)
+	return i18n
 }

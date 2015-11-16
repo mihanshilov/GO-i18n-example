@@ -26,5 +26,9 @@
   {
     "id": "composite-string",
     "translation": "I'm composite string example: {{ .Item1 }}, {{ .Item2 }}, {{ .Item3 }}."
+  },
+  {
+    "id": "today",
+    "translation": "Today is {{ .Date }}."
   }
 ]

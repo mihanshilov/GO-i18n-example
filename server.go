@@ -4,9 +4,13 @@ import (
 	"html/template"
 	"net/http"
 	"github.com/mihanshilov/GO-i18n-example/i18n"
+	"time"
+	vubei18n "github.com/vube/i18n" // for formatting numbers, dates, currencies
 )
 
 func main() {
+	i18n.SetUp("/home/mshilov/go/src/github.com/vube/i18n/data/rules/", "resources/vube-i18n/strings", "en")
+
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])
@@ -16,7 +20,7 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
-	T, _ := i18n.GetTranslator(getLocaleId(r))
+	i18n := i18n.NewI18n(getLocaleId(r))
 
 	type dataForCompositeString struct {
 		Item1 string
@@ -24,14 +28,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Item3 string
 	}
 
+	formattedDate, _ := i18n.Formatter.FormatDateTime(vubei18n.DateFormatShort, time.Now().Local())
+
 	pageContents := map[string]string{
-		"Title": T("page-title"),
-		"MenuItem1": T("menu-item-1"),
-		"MenuItem2": T("menu-item-2"),
-		"MenuItem3": T("menu-item-3"),
-		"CurrenttLocale": T("current-locale:"),
-		"StaticString": T("static-string"),
-		"CompositeString": T("composite-string", dataForCompositeString { Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
+		"Title": i18n.T("page-title"),
+		"MenuItem1": i18n.T("menu-item-1"),
+		"MenuItem2": i18n.T("menu-item-2"),
+		"MenuItem3": i18n.T("menu-item-3"),
+		"CurrenttLocale": i18n.T("current-locale:"),
+		"StaticString": i18n.T("static-string"),
+		"CompositeString": i18n.T("composite-string", dataForCompositeString { Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
+		"Today": i18n.T("today", map[string]string{ "Date": formattedDate }),
 	}
 
 	t, _:= template.ParseFiles("index.html")

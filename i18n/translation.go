@@ -1,17 +1,40 @@
 package i18n
 
 import (
-	nicksnyderi18n "github.com/nicksnyder/go-i18n/i18n"
+	vubei18n "github.com/vube/i18n" // for formatting numbers, dates, currencies
+	nicksnyderi18n "github.com/nicksnyder/go-i18n/i18n" // for translations
 )
 
 var defaultLang string = "en"
+var translationFactory *vubei18n.TranslatorFactory
 
-func init(){
+func SetUp(formattingRulesPath string , translatedStringsPath string, defaultLang string){
+
+	// setup formatting
+	translationFactory, _ = vubei18n.NewTranslatorFactory(
+		[]string{formattingRulesPath},
+		[]string{""},
+		defaultLang,
+	)
+
+	// setup translations
 	nicksnyderi18n.MustLoadTranslationFile("resources/en.all.json")
 	nicksnyderi18n.MustLoadTranslationFile("resources/fr.all.json")
 }
 
-func GetTranslator(lng string) (nicksnyderi18n.TranslateFunc, error) {
+type I18n struct  {
+	T nicksnyderi18n.TranslateFunc
+	Formatter *vubei18n.Translator
+}
 
-	return nicksnyderi18n.Tfunc(lng, "", defaultLang)
+
+
+func NewI18n (lng string) I18n{
+	T, _ := nicksnyderi18n.Tfunc(lng, "", defaultLang)
+	F, _ := translationFactory.GetTranslator(lng)
+
+	return I18n{
+		T: T,
+		Formatter: F,
+	}
 }

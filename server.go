@@ -9,13 +9,27 @@ import (
 )
 
 func main() {
-	i18n.SetUp("/home/mshilov/go/src/github.com/vube/i18n/data/rules/", "resources/vube-i18n/strings", "en")
+	SetUpI18n()
 
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])
 	})
+
 	http.ListenAndServe(":8080", nil)
+}
+
+func SetUpI18n(){
+	dafaultLocaleId := "en"
+
+	pathToStringFormattingRules := "resources/vube-i18n/rules"
+
+	translationFiles := []string{
+		"resources/en.all.json",
+		"resources/fr.all.json",
+	}
+
+	i18n.SetUp(pathToStringFormattingRules, translationFiles, dafaultLocaleId)
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {

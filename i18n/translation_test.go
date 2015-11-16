@@ -57,7 +57,17 @@ func TestComposedString_Fr(t *testing.T) {
 }
 
 func createI18n(localeId string) I18n{
-	SetUp("resources/vube-i18n/rules", "resources/vube-i18n/strings", "en")
+
+	dafaultLocaleId := "en"
+
+	pathToStringFormattingRules := "resources/vube-i18n/rules"
+
+	translationFiles := []string{
+		"resources/en.all.json",
+		"resources/fr.all.json",
+	}
+
+	SetUp(pathToStringFormattingRules, translationFiles, dafaultLocaleId)
 	i18n := NewI18n(localeId)
 	return i18n
 }

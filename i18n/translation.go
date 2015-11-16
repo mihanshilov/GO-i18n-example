@@ -8,7 +8,7 @@ import (
 var defaultLang string = "en"
 var translationFactory *vubei18n.TranslatorFactory
 
-func SetUp(formattingRulesPath string , translatedStringsPath string, defaultLang string){
+func SetUp(formattingRulesPath string , translatedStringsPaths []string, defaultLang string){
 
 	// setup formatting
 	translationFactory, _ = vubei18n.NewTranslatorFactory(
@@ -18,8 +18,9 @@ func SetUp(formattingRulesPath string , translatedStringsPath string, defaultLan
 	)
 
 	// setup translations
-	nicksnyderi18n.MustLoadTranslationFile("resources/en.all.json")
-	nicksnyderi18n.MustLoadTranslationFile("resources/fr.all.json")
+	for _, each := range translatedStringsPaths {
+		nicksnyderi18n.MustLoadTranslationFile(each)
+	}
 }
 
 type I18n struct  {

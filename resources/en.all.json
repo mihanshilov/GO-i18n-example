@@ -1,0 +1,30 @@
+[
+  {
+    "id": "page-title",
+    "translation": "GO Web App i18n example"
+  },
+  {
+    "id": "menu-item-1",
+    "translation": "Menu item 1"
+  },
+  {
+    "id": "menu-item-2",
+    "translation": "Menu item 2"
+  },
+  {
+    "id": "menu-item-3",
+    "translation": "Menu item 3"
+  },
+  {
+    "id": "current-locale:",
+    "translation": "Current locale:"
+  },
+  {
+    "id": "static-string",
+    "translation": "I'm static string example."
+  },
+  {
+    "id": "composite-string",
+    "translation": "I'm composite string example: {{ .Item1 }}, {{ .Item2 }}, {{ .Item3 }}."
+  }
+]

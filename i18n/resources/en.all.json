@@ -1,0 +1,10 @@
+[
+  {
+    "id": "hello_world",
+    "translation": "Hello world"
+  },
+  {
+    "id": "greeting",
+    "translation": "Hello {{ .Name }}"
+  }
+]

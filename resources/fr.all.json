@@ -1,0 +1,30 @@
+[
+  {
+    "id": "page-title",
+    "translation": "Web App GO exemple i18n"
+  },
+  {
+    "id": "menu-item-1",
+    "translation": "Point de menu 1"
+  },
+  {
+    "id": "menu-item-2",
+    "translation": "Point de menu 2"
+  },
+  {
+    "id": "menu-item-3",
+    "translation": "Point de menu 3"
+  },
+  {
+    "id": "current-locale:",
+    "translation": "Locale actuelle:"
+  },
+  {
+    "id": "static-string",
+    "translation": "Je suis par exemple de chaîne statique."
+  },
+  {
+    "id": "composite-string",
+    "translation": "Je suis par exemple de chaîne composite: {{ .Item1 }}, {{ .Item2 }}, {{ .Item3 }}."
+  }
+]

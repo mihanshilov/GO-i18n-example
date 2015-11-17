@@ -1,11 +1,11 @@
 package main
 
 import (
+	vubei18n "github.com/mihanshilov/GO-i18n-example/Godeps/_workspace/src/github.com/vube/i18n" // for formatting numbers, dates, currencies
+	"github.com/mihanshilov/GO-i18n-example/i18n"
 	"html/template"
 	"net/http"
-	"github.com/mihanshilov/GO-i18n-example/i18n"
 	"time"
-	vubei18n "github.com/vube/i18n" // for formatting numbers, dates, currencies
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-func SetUpI18n(){
+func SetUpI18n() {
 	dafaultLocaleId := "en"
 
 	pathToStringFormattingRules := "resources/vube-i18n/rules"
@@ -45,29 +45,29 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	formattedDate, _ := i18n.Formatter.FormatDateTime(vubei18n.DateFormatShort, time.Now().Local())
 
 	pageContents := map[string]string{
-		"Title": i18n.T("page-title"),
-		"MenuItem1": i18n.T("menu-item-1"),
-		"MenuItem2": i18n.T("menu-item-2"),
-		"MenuItem3": i18n.T("menu-item-3"),
-		"CurrenttLocale": i18n.T("current-locale:"),
-		"StaticString": i18n.T("static-string"),
-		"CompositeString": i18n.T("composite-string", dataForCompositeString { Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
-		"Today": i18n.T("today", map[string]string{ "Date": formattedDate }),
+		"Title":           i18n.T("page-title"),
+		"MenuItem1":       i18n.T("menu-item-1"),
+		"MenuItem2":       i18n.T("menu-item-2"),
+		"MenuItem3":       i18n.T("menu-item-3"),
+		"CurrenttLocale":  i18n.T("current-locale:"),
+		"StaticString":    i18n.T("static-string"),
+		"CompositeString": i18n.T("composite-string", dataForCompositeString{Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
+		"Today":           i18n.T("today", map[string]string{"Date": formattedDate}),
 	}
 
-	t, _:= template.ParseFiles("index.html")
+	t, _ := template.ParseFiles("index.html")
 	t.Execute(w, pageContents)
 }
 
 // try get selected locale from cookie
-func getLocaleId(r *http.Request) string{
+func getLocaleId(r *http.Request) string {
 
 	defaultLocale := "en"
 
 	cookie, err := r.Cookie("lang")
 
 	if err != nil {
-		return defaultLocale;
+		return defaultLocale
 	}
 
 	if cookie == nil || cookie.Value == "" {

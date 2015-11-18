@@ -44,7 +44,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	formattedDate, _ := i18n.Formatter.FormatDateTime(vubei18n.DateFormatShort, time.Now().Local())
 
-	pageContents := map[string]string{
+	/*pageContents := map[string]string{
 		"Title":           i18n.T("page-title"),
 		"MenuItem1":       i18n.T("menu-item-1"),
 		"MenuItem2":       i18n.T("menu-item-2"),
@@ -53,6 +53,30 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		"StaticString":    i18n.T("static-string"),
 		"CompositeString": i18n.T("composite-string", dataForCompositeString{Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
 		"Today":           i18n.T("today", map[string]string{"Date": formattedDate}),
+	}*/
+
+	type menuItems struct{
+		Item1 string
+		Item2 string
+		Item3 string
+	}
+
+	type pageData struct {
+		Title           string
+		Menu			menuItems
+		CurrenttLocale  string
+		StaticString    string
+		CompositeString string
+		Today           string
+	}
+
+	pageContents := pageData{
+		Title:           i18n.T("page-title"),
+		Menu:       menuItems{Item1: i18n.T("menu-item-1"), Item2: i18n.T("menu-item-2"), Item3: i18n.T("menu-item-3")},
+		CurrenttLocale:  i18n.T("current-locale:"),
+		StaticString:    i18n.T("static-string"),
+		CompositeString: i18n.T("composite-string", dataForCompositeString{Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
+		Today:           i18n.T("today", map[string]string{"Date": formattedDate}),
 	}
 
 	t, _ := template.ParseFiles("index.html")

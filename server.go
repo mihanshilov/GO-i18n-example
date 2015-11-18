@@ -32,9 +32,17 @@ func SetUpI18n() {
 	i18n.SetUp(pathToStringFormattingRules, translationFiles, dafaultLocaleId)
 }
 
+func getI18n(r *http.Request) (i18n.I18n) {
+
+	var defaultLang string = "en"
+	var langCookieName string = "lang"
+
+	return i18n.GetLanguageFromRequestCookie(r, langCookieName, defaultLang)
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
 
-	i18n := i18n.NewI18n(getLocaleId(r))
+	i18n := getI18n(r);
 
 	type dataForCompositeString struct {
 		Item1 string
@@ -43,17 +51,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	formattedDate, _ := i18n.Formatter.FormatDateTime(vubei18n.DateFormatShort, time.Now().Local())
-
-	/*pageContents := map[string]string{
-		"Title":           i18n.T("page-title"),
-		"MenuItem1":       i18n.T("menu-item-1"),
-		"MenuItem2":       i18n.T("menu-item-2"),
-		"MenuItem3":       i18n.T("menu-item-3"),
-		"CurrenttLocale":  i18n.T("current-locale:"),
-		"StaticString":    i18n.T("static-string"),
-		"CompositeString": i18n.T("composite-string", dataForCompositeString{Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
-		"Today":           i18n.T("today", map[string]string{"Date": formattedDate}),
-	}*/
 
 	type menuItems struct{
 		Item1 string
@@ -68,35 +65,19 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		StaticString    string
 		CompositeString string
 		Today           string
+		SelectedLanguage string
 	}
 
 	pageContents := pageData{
-		Title:           i18n.T("page-title"),
-		Menu:       menuItems{Item1: i18n.T("menu-item-1"), Item2: i18n.T("menu-item-2"), Item3: i18n.T("menu-item-3")},
-		CurrenttLocale:  i18n.T("current-locale:"),
-		StaticString:    i18n.T("static-string"),
-		CompositeString: i18n.T("composite-string", dataForCompositeString{Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
-		Today:           i18n.T("today", map[string]string{"Date": formattedDate}),
+		Title:            i18n.T("page-title"),
+		Menu:             menuItems{Item1: i18n.T("menu-item-1"), Item2: i18n.T("menu-item-2"), Item3: i18n.T("menu-item-3")},
+		CurrenttLocale:   i18n.T("current-locale:"),
+		StaticString:     i18n.T("static-string"),
+		CompositeString:  i18n.T("composite-string", dataForCompositeString{Item1: "item 1", Item2: "item 2", Item3: "item 3"}),
+		Today:            i18n.T("today", map[string]string{"Date": formattedDate}),
+		SelectedLanguage: i18n.CurrentLanguageId,
 	}
 
 	t, _ := template.ParseFiles("index.html")
 	t.Execute(w, pageContents)
-}
-
-// try get selected locale from cookie
-func getLocaleId(r *http.Request) string {
-
-	defaultLocale := "en"
-
-	cookie, err := r.Cookie("lang")
-
-	if err != nil {
-		return defaultLocale
-	}
-
-	if cookie == nil || cookie.Value == "" {
-		return "en"
-	} else {
-		return cookie.Value
-	}
 }

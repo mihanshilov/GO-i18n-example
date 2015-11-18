@@ -17,18 +17,12 @@ function getCookie(cname) {
 }
 
 $(function(){
-    const cookieName = "lang";
-    var lang = getCookie(cookieName);
-    if(!lang)
-    {
-        lang = "en";
-    }
-
     var $localeSelector = $("#lng");
-    $localeSelector.val(lang);
-    $localeSelector.change(function(){
-        var option = $(this).find('option:selected').val();
-        setCookie(cookieName, option, 10000);
-        document.location.href = document.location.href;
-    });
+    $localeSelector
+        .val(_selectedLanguage)
+        .change(function(){
+            var option = $(this).find('option:selected').val();
+            setCookie("lang", option, 10000);
+            document.location.href = document.location.href;
+        });
 });
